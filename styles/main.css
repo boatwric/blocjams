@@ -82,6 +82,13 @@ body {
      cursor: pointer;
  }
  
- .links-container .navbar-link:hover { /*pseudoselector that makes action happen on hovering cursor over link*/
+ .links-container .navbar-link:hover { /*pseudoselector that makes action happen on hovering cursor over link, in this case change color while hovering*/
      color: rgb(233,50,117);
  }
+
+ .links-container .navbar-link:active { /*change color while you're pressing on it.*/
+   color: rgb(233,50,117); 
+   background-color: white;  
+}
+
+/*This style may be overridden by any other link-related pseudo-classes, that is :link, :hover, and :visited, appearing in subsequent rules.*/ 
