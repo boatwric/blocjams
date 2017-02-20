@@ -42,11 +42,46 @@ body {
 }
 
 .navbar { /*body is already declared, so you can just start with dot class*/
-	padding: 0.5rem; /*rem is the font size of the root element*/
-	background-color: rgb(101, 18, 95);
+	position: relative;
+    padding: 0.5rem; /*rem is the font size of the root element*/
+    background-color: rgba(101,18,95,0.5); /*rgb color, the 'a' determines opacity, in this case translucent*/
+    z-index: 1; /*Determines what elements rest on top of each other. The higher the z-index, the more deference it gets. In this case, makes the navbar sit on top of adjacent elements*/
 }
 
 .navbar .logo { /*wouldn't run at first because I forgot dot on navbar class*/ 
 	position: relative;
 	left: 2rem;
-} /*"Notice that we've put .logo right after the .navbar class selector with a space separating them. This is called a descendant selector. The browser applies the style to elements of the logo class which are contained in elements of the navbar class. This is different from body.landing, which selects the body element that has the  .landing class applied to it, not to elements nested within it."*/
+    cursor: pointer; /*fingerpoint icon when you hover over it*/
+} 
+
+/*"Notice that we've put .logo right after the .navbar class selector with a space separating them. This is called a descendant selector. The browser applies the style to elements of the logo class which are contained in elements of the navbar class. This is different from body.landing, which selects the body element that has the  .landing class applied to it, not to elements nested within it."*/
+
+.navbar .links-container {
+ display: table;
+     position: absolute;
+     top: 0;
+     right: 0;
+     height: 100px;
+     color: white;
+     text-decoration: none; /*property allows for underline, italics, strike-through, etc, if you want them*/
+}
+
+.links-container .navbar-link {
+     display: table-cell;
+     position: relative;
+     height: 100%;
+     padding-left: 1rem;
+     padding-right: 1rem;
+     vertical-align: middle; /*orients inline or table-cell vertically, in this case right in the center*/
+     color: white;
+     font-size: 0.625rem;
+     letter-spacing: 0.05rem;
+     font-weight: 700;
+     text-transform: uppercase;
+     text-decoration: none;
+     cursor: pointer;
+ }
+ 
+ .links-container .navbar-link:hover { /*pseudoselector that makes action happen on hovering cursor over link*/
+     color: rgb(233,50,117);
+ }
