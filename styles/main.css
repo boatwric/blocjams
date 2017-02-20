@@ -50,3 +50,14 @@ body {
 	position: relative;
 	left: 2rem;
 } /*"Notice that we've put .logo right after the .navbar class selector with a space separating them. This is called a descendant selector. The browser applies the style to elements of the logo class which are contained in elements of the navbar class. This is different from body.landing, which selects the body element that has the  .landing class applied to it, not to elements nested within it."*/
+
+.clearfix::before,
+
+.clearfix::after {
+  content: " ";
+  display: table;
+}
+
+.clearfix::after {
+  clear: both;
+}
