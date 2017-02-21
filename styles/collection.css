@@ -1,4 +1,4 @@
-body.collection {
+body {
      background-image: url(../assets/images/blurred_backgrounds/blur_bg_2.jpg);
      background-repeat: no-repeat;/*if window is bigger than image, it won't start repeating*/
      background-attachment: fixed; /*as you scroll, background will not move*/
