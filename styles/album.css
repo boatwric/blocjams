@@ -1,0 +1,83 @@
+body.album { /*sets the background for the whole body*/
+     background-image: url(../assets/images/blurred_backgrounds/blur_bg_3.jpg);
+     background-repeat: no-repeat; /*won't repeat if browser is stretched too far*/
+     background-attachment: fixed; /*doesn't move with scroll*/
+     background-position: center center; /*centered up and down, right and left*/
+     background-size: cover; /*cover the whole broswer window*/
+ }
+ 
+/*All the album details, still inside normal flow thanks to relative positioning. Keeps everything easy to manipulate without running into each other*/
+
+ .album-cover-art {
+     position: relative;
+     left: 20%;
+     margin-top: 1rem;
+     width: 60%;
+ }
+
+.album-view-details {
+     position: relative;
+     top: 1.5rem;
+     padding: 1rem;
+ }
+ 
+ .album-view-details .album-view-title {
+     font-weight: 300;
+     font-size: 2rem;
+ }
+ 
+ .album-view-details .album-view-artist {
+     font-weight: 300;
+     font-size: 1.5rem;
+ }
+
+.album-view-details .album-view-release-info {
+     font-weight: 300;
+     font-size: 0.75rem;
+ }
+
+.album-view-song-list { /*table style*/
+     width: 90%;
+     margin: 1.5rem auto;
+     font-weight: 300;
+     font-size: 0.75em;
+     border-collapse: collapse;
+ }
+
+.album-view-song-item {
+     height: 3rem;
+     border-bottom: 1px solid rgba(255,255,255,0.5); /*separates with line on bottom, half opacity*/
+ }
+
+.song-item-number {
+     width: 5%;
+ }
+
+.song-item-title {
+     width: 85%;
+ }
+ 
+ .song-item-duration {
+     width: 5%;
+ }
+
+/* media query, fit to screen between 320 and 640px wide; notice how multiple multiple brackets are held inside parent brackets*/
+ @media (max-width: 640px) and (min-width: 320px) {
+     .album-view-details {
+         text-align: center;
+     }
+     
+     .album-view-title {
+         margin-top: 0;   
+     }
+ }
+
+/*this is to keep song list from hitting edges of small devices*/
+ @media (max-width: 1024px) and (min-width: 320px) {
+    .album-view-song-list {
+         position: relative;
+         top: 1rem;
+         width: 80%;
+         margin: auto;
+     }
+ }

@@ -3,6 +3,10 @@
 	max-width: 64rem; /*Squish it in on the left and right*/
 }
 
+.container.narrow { /*sets max width*/
+     max-width: 56rem;
+ }
+
 @media (min-width: 640px) { /*media query for small screens like phones and tablets*/
 	html { font-size: 112%; } 
 	
@@ -85,3 +89,8 @@ body {
  .links-container .navbar-link:hover { /*pseudoselector that makes action happen on hovering cursor over link*/
      color: rgb(233,50,117);
  }
+
+.links-container .navbar-link:active { /*change color while you're pressing on it.*/
+color: rgb(233,50,117); 
+background-color: white;  
+}
