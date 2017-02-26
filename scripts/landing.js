@@ -2,21 +2,18 @@
 var pointsArray = document.getElementsByClassName('point');/*defines what's being manipulated and saves them to points; in this case it looks at the document (HTML), uses a selector to return all the nodes as a list, and specifies in the parathesis to gather up all the elements with an ID of point*/
   
 
+var revealPoint = function(point) {
+       point.style.opacity = 1;
+       point.style.transform = "scaleX(1) translateY(0)";
+       point.style.msTransform = "scaleX(1) translateY(0)";
+       point.style.WebkitTransform = "scaleX(1) translateY(0)";
+};
+
 var animatePoints = function(points) { //Had a devil of a time getting this to load once 'points' became 'pointsArray' and 'animatePoints got 'points' passed in as a parameter//
-  
-  var revealPoint = function() {
-
-     for (var i = 0; i < points.length; i++) {
-       points[i].style.opacity = 1;
-       points[i].style.transform = "scaleX(1) translateY(0)";
-       points[i].style.msTransform = "scaleX(1) translateY(0)";
-       points[i].style.WebkitTransform = "scaleX(1) translateY(0)";
-     }
-  };
-    revealPoint();
-}; /*closes off whole function, end with semicolon since it was assigned to a variable*/
-
-//Used to be a function call here that was messing up everything below. LESSON- DON'T ALWAYS CALL YOUR FUNCTION RIGHT AWAY!//
+    forEach(points, revealPoint);
+}
+    
+    
 
 window.onload = function() {
      
