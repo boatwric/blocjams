@@ -58,8 +58,33 @@ body.album { /*sets the background for the whole body*/
  }
  
  .song-item-duration {
-     width: 5%;
+    width: 5%;
+    min-width: 30px; /*accomodates width of play button, keeps song list from shifting over to make room*/
  }
+
+/*these control the play button's appearance when song is hovered over, see album.js for more*/
+
+ .album-song-button {
+     text-align: center;
+     font-size: 14px;
+     background-color: white;
+     color: rgb(210, 40, 123);
+     border-radius: 50% 50%;
+     display: inline-block;
+     width: 28px;
+     height: 28px;
+ }
+ 
+ .album-song-button:hover {
+     cursor: pointer;
+     color: white;
+     background-color: rgb(210, 40, 123);
+ }
+ 
+ .album-song-button span {
+     line-height: 28px;
+ }
+
 
 /* media query, fit to screen between 320 and 640px wide; notice how multiple multiple brackets are held inside parent brackets*/
  @media (max-width: 640px) and (min-width: 320px) {

@@ -33,7 +33,7 @@
 var createSongRow = function(songNumber, songName, songLength) { //creates a table that generates song row content
      var template =
         '<tr class="album-view-song-item">' //notice how it manages the info with + 'strings' on each row
-      + '  <td class="song-item-number">' + songNumber + '</td>'
+      + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' //data-song-number stores the song number, important if you set off the play button with the cursor and want to revert back to the number when the cursor leaves
       + '  <td class="song-item-title">' + songName + '</td>'
       + '  <td class="song-item-duration">' + songLength + '</td>'
       + '</tr>'
@@ -64,7 +64,33 @@ var setCurrentAlbum = function(album) {
          albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
      }
  };
- 
+
+/*var songListContainer = document.getElementsByClassName('album-view-song-list')[0]; //target parent element, causes EVENT BUBBLING*/
+
+var songListContainer = document.getElementsByClassName('album-view-song-list')[0]; 
+
+var songRows = document.getElementsByClassName('album-view-song-item');
+
+
+var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>'; //This will cause a play button to appear each time song has cursor on it
+
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+   
+   songListContainer.addEventListener('mouseover', function(event) {
+         //event.target stores DOM element where event occurs, in this case tells you what song your mouse pointer is  over- until revison, and now it gives a play button
+         //console.log(event.target); --> old instructions
+         if (event.target.parentElement.className === 'album-view-song-item') {
+             // Changes the content from the number to the play button's HTML, this is just the parent element
+             event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+             //This is the child element, only works if you're hovering over the song number now
+         }
+     });
+   for (var i = 0; i < songRows.length; i++) {
+         songRows[i].addEventListener('mouseleave', function(event) {
+             // Fucntion reverts the content back to the number when the cursor leaves the row
+                        this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
+                        //getAttribute looks at track's stored song number and gets it back; might want to get advice on deploying this. attribute
+         });
+     }
  };
