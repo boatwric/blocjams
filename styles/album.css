@@ -4,6 +4,8 @@ body.album { /*sets the background for the whole body*/
      background-attachment: fixed; /*doesn't move with scroll*/
      background-position: center center; /*centered up and down, right and left*/
      background-size: cover; /*cover the whole broswer window*/
+     padding-bottom: 200px; /*added in checkpoint 15 to make room for player bar fixed on bottom*/
+
  }
  
 /*All the album details, still inside normal flow thanks to relative positioning. Keeps everything easy to manipulate without running into each other*/
