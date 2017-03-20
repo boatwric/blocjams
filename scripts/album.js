@@ -39,10 +39,24 @@ var createSongRow = function(songNumber, songName, songLength) { //creates a tab
       + '</tr>'
       ;
  
-     return template;
+      return $(template); //Used to be return template; until Checkpoint 17
  };
 
 var setCurrentAlbum = function(album) {
+
+/*
+We replace each instance of getElementsByClassName with a jQuery selector and use CSS-style syntax to select the elements. Additionally, we add a $ to the start of each variable name because they now reference jQuery objects.
+*/
+     var $albumTitle = $('.album-view-title');
+     var $albumArtist = $('.album-view-artist');
+     var $albumReleaseInfo = $('.album-view-release-info');
+     var $albumImage = $('.album-cover-art');
+     var $albumSongList = $('.album-view-song-list');  
+  
+/* 
+
+Raw JS removed in Checkpoint 17:  
+     
      // Sets all album elements that need to be displayed, corresponds to HTML elements
      var albumTitle = document.getElementsByClassName('album-view-title')[0];
      var albumArtist = document.getElementsByClassName('album-view-artist')[0];
@@ -50,13 +64,37 @@ var setCurrentAlbum = function(album) {
      var albumImage = document.getElementsByClassName('album-cover-art')[0];
      var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
  
+ */
+ 
+/* 
+
+Raw JS removed in Checkpoint 17:  
+       
      // firstChild finds first child node of element, nodeValue returns or sets up value; value set to album title
      albumTitle.firstChild.nodeValue = album.title;
      albumArtist.firstChild.nodeValue = album.artist;
      albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
      albumImage.setAttribute('src', album.albumArtUrl);
- 
-     // song list set to empty string before loop, clears out any previous information
+
+*/
+     $albumTitle.text(album.title); //jQuery .text replaces JS firstChild.nodeValue
+     $albumArtist.text(album.artist);
+     $albumReleaseInfo.text(album.year + ' ' + album.label);
+     $albumImage.attr('src', album.albumArtUrl); //jQuery .attr replaces JS setAttribute()
+     
+     $albumSongList.empty();
+     for (var i = 0; i < album.songs.length; i++) {
+        var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+        $albumSongList.append($newRow);
+     }
+ };
+
+  
+/* 
+
+Raw JS removed in Checkpoint 17: 
+  
+  // song list set to empty string before loop, clears out any previous information
      albumSongList.innerHTML = '';
  
      // goes through all the songs from specified album, inserts into html using innerHTML, createSong function called at each loop to populate song number, title, and duration
@@ -65,6 +103,8 @@ var setCurrentAlbum = function(album) {
      }
  };
 
+*/
+  
 var findParentByClassName = function(element, targetClass) {
     if (element) {
         var currentParent = element.parentElement;
