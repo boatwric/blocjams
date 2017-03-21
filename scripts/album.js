@@ -39,7 +39,49 @@ var createSongRow = function(songNumber, songName, songLength) { //creates a tab
       + '</tr>'
       ;
  
-      return $(template); //Used to be return template; until Checkpoint 17
+      // return $(template); this used to be return template; until Checkpoint 18
+     var $row = $(template);   
+  
+    var clickHandler = function() {
+      var songNumber = $(this).attr('data-song-number');
+
+	  if (currentlyPlayingSong !== null) {
+		// Revert to song number for currently playing song because user started playing new song.
+		var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSong + '"]');
+		currentlyPlayingCell.html(currentlyPlayingSong);
+	  }
+	  if (currentlyPlayingSong !== songNumber) {
+		// Switch from Play -> Pause button to indicate new song is playing.
+		$(this).html(pauseButtonTemplate);
+		currentlyPlayingSong = songNumber;
+	  } else if (currentlyPlayingSong === songNumber) {
+		// Switch from Pause -> Play button to pause currently playing song.
+		$(this).html(playButtonTemplate);
+		currentlyPlayingSong = null;
+	  }
+    };
+  
+     var onHover = function(event) {
+       var songNumberCell = $(this).find('.song-item-number');
+       var songNumber = songNumberCell.attr('data-song-number');
+
+        if (songNumber !== currentlyPlayingSong) {
+            songNumberCell.html(playButtonTemplate);
+        } 
+     };
+     
+     var offHover = function(event) {
+       var songNumberCell = $(this).find('.song-item-number');
+       var songNumber = songNumberCell.attr('data-song-number');
+
+        if (songNumber !== currentlyPlayingSong) {
+            songNumberCell.html(songNumber);
+        }
+     };
+     
+     $row.find('.song-item-number').click(clickHandler);
+     $row.hover(onHover, offHover);
+     return $row;
  };
 
 var setCurrentAlbum = function(album) {
@@ -104,7 +146,10 @@ Raw JS removed in Checkpoint 17:
  };
 
 */
-  
+
+/*
+
+REMOVED IN CHECKPOINT 18
 var findParentByClassName = function(element, targetClass) {
     if (element) {
         var currentParent = element.parentElement;
@@ -146,14 +191,22 @@ var getSongItem = function(element) {
             currentlyPlayingSongElement.innerHTML = currentlyPlayingSongElement.getAttribute('data-song-number');
             songItem.innerHTML = pauseButtonTemplate;
             currentlyPlayingSong = songItem.getAttribute('data-song-number');
-     } };
+     } 
+ };
+*/
+
 
 /*var songListContainer = document.getElementsByClassName('album-view-song-list')[0]; //target parent element, causes EVENT BUBBLING*/
+
+/*
+
+REMOVED IN CHECKPOINT 18
 
 var songListContainer = document.getElementsByClassName('album-view-song-list')[0]; 
 
 var songRows = document.getElementsByClassName('album-view-song-item');
 
+*/
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>'; //This will cause a play button to appear each time song has cursor on it
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
@@ -161,9 +214,12 @@ var currentlyPlayingSong = null;
 
 
 
- window.onload = function() {
-     setCurrentAlbum(albumPicasso);
-   
+// window.onload = function() TAKEN OUT IN CHECKPOINT 18
+ $(document).ready(function() {
+   setCurrentAlbum(albumPicasso);
+ 
+/*   
+TAKEN OUT IN CHECKPOINT 18
    songListContainer.addEventListener('mouseover', function(event) {
          //event.target stores DOM element where event occurs, in this case tells you what song your mouse pointer is  over- until revison, and now it gives a play button
          //console.log(event.target); --> old instructions
@@ -178,7 +234,10 @@ var currentlyPlayingSong = null;
              //This is the child element, only works if you're hovering over the song number now
          }
      });
-   for (var i = 0; i < songRows.length; i++) {
+  */   
+   //for (var i = 0; i < songRows.length; i++) {
+/*   
+TAKEN OUT IN CHECKPOINT 18
          songRows[i].addEventListener('mouseleave', function(event) {
              // Fucntion reverts the content back to the number when the cursor leaves the row
              var songItem = getSongItem(event.target);
@@ -189,8 +248,9 @@ var currentlyPlayingSong = null;
                      songItem.innerHTML = songItemNumber;
              }
          });  
-         songRows[i].addEventListener('click', function(event) {
-             clickHandler(event.target);
-         });
-     }
- };
+*/         
+        // songRows[i].addEventListener('click', function(event) {
+             //clickHandler(event.target);
+         //});
+    // }
+ });
