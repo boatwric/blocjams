@@ -34,25 +34,37 @@ var $row = $(template);
 var clickHandler = function() {
     var songNumber = parseInt($(this).attr('data-song-number'));
 
+      //Song already loaded, save song information
 	  if (currentlyPlayingSongNumber !== null) {
 		// Revert to song number for currently playing song because user started playing new song.
-		var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);	currentlyPlayingCell.html(currentlyPlayingSongNumber);
+		console.log("This is the first if");
+        var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);	currentlyPlayingCell.html(currentlyPlayingSongNumber);
 	  }
+      //If no song yet playing, play brand new song
 	  if (currentlyPlayingSongNumber !== songNumber) {
 		// Switch from Play -> Pause button to indicate new song is playing.
-		currentSoundFile.play();
+        
+        console.log("This is the second if");
         $(this).html(pauseButtonTemplate);
 		setSong(songNumber);
+        currentSoundFile.play();
         updatePlayerBarSong();
 	  } else if (currentlyPlayingSongNumber === songNumber) {
-		if (currentSoundFile.isPaused()){
+		console.log('this is else if');
+        //current song is paused
+        if (currentSoundFile.isPaused()){
+          console.log('in ELSE IF first if');
           $(this).html(pauseButtonTemplate);
           $('.main-controls .play-pause').html(playerBarPauseButton);
           currentSoundFile.play();
-        }else {
+        }
+        //current song is not paused/is playing
+        else {
+          console.log('in ELSE IF else');
           $(this).html(playButtonTemplate);
           $('.main-controls .play-pause').html(playerBarPlayButton);
           currentSoundFile.pause();
+          //updatePlayerBarSong();
         }
 	  }
     };
@@ -187,7 +199,7 @@ var currentSoundFile = null;
 var currentVolume = 80;
 
 
-
+var $playerBarPlayButton = $('.main-controls .play-pause');
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
 
@@ -195,4 +207,5 @@ var $nextButton = $('.main-controls .next');
    setCurrentAlbum(albumPicasso);
    $previousButton.click(previousSong);
    $nextButton.click(nextSong);
+   $playerBarPlayButton.click(setSong);
  });
