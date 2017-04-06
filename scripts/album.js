@@ -1,4 +1,26 @@
+var setSong = function(songNumber){
+  if (currentSoundFile) {
+         currentSoundFile.stop();
+     }
+  currentlyPlayingSongNumber = parseInt(songNumber);
+  currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+       currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
+          formats: [ 'mp3' ],
+          preload: true
+     });
+  setVolume(currentVolume)
+ };
 
+var setVolume = function(volume) {
+     if (currentSoundFile) {
+         currentSoundFile.setVolume(volume);
+     }
+ };
+
+var getSongNumberCell = function(number) {
+     return $('.song-item-number[data-song-number="' + number + '"]')
+};
+     
 var createSongRow = function(songNumber, songName, songLength) { //creates a table that generates song row content
      var template =
         '<tr class="album-view-song-item">' //notice how it manages the info with + 'strings' on each row
@@ -11,25 +33,40 @@ var createSongRow = function(songNumber, songName, songLength) { //creates a tab
 var $row = $(template);   
   
 var clickHandler = function() {
-      var songNumber = parseInt($(this).attr('data-song-number'));
+    var songNumber = parseInt($(this).attr('data-song-number'));
 
+      //Song already loaded, save song information
 	  if (currentlyPlayingSongNumber !== null) {
 		// Revert to song number for currently playing song because user started playing new song.
-		var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
-		currentlyPlayingCell.html(currentlyPlayingSongNumber);
+		console.log("This is the first if");
+        var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);	currentlyPlayingCell.html(currentlyPlayingSongNumber);
 	  }
+      //If no song yet playing, play brand new song
 	  if (currentlyPlayingSongNumber !== songNumber) {
 		// Switch from Play -> Pause button to indicate new song is playing.
-		$(this).html(pauseButtonTemplate);
-		currentlyPlayingSongNumber = songNumber;
-        currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+        
+        console.log("This is the second if");
+        $(this).html(pauseButtonTemplate);
+		setSong(songNumber);
+        currentSoundFile.play();
         updatePlayerBarSong();
 	  } else if (currentlyPlayingSongNumber === songNumber) {
-		// Switch from Pause -> Play button to pause currently playing song.
-		$(this).html(playButtonTemplate);
-        $('.main-controls .play-pause').html(playerBarPlayButton);
-		currentlyPlayingSongNumber = null;
-        currentSongFromAlbum = null;
+		console.log('this is else if');
+        //current song is paused
+        if (currentSoundFile.isPaused()){
+          console.log('in ELSE IF first if');
+          $(this).html(pauseButtonTemplate);
+          $('.main-controls .play-pause').html(playerBarPauseButton);
+          currentSoundFile.play();
+        }
+        //current song is not paused/is playing
+        else {
+          console.log('in ELSE IF else');
+          $(this).html(playButtonTemplate);
+          $('.main-controls .play-pause').html(playerBarPlayButton);
+          currentSoundFile.pause();
+          //updatePlayerBarSong();
+        }
 	  }
     };
   
@@ -108,14 +145,16 @@ var nextSong = function() {
     var lastSongNumber = currentlyPlayingSongNumber;
 
     // Set a new current song
-    currentlyPlayingSongNumber = currentSongIndex + 1;
-    currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
+    setSong(parseInt(currentSongIndex + 1));
+    currentSoundFile.play();
+
 
     // Update the Player Bar information
     updatePlayerBarSong();
 
-    var $nextSongNumberCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
-    var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
+    var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+    var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
+
 
     $nextSongNumberCell.html(pauseButtonTemplate);
     $lastSongNumberCell.html(lastSongNumber);
@@ -134,20 +173,40 @@ var previousSong = function() {
     var lastSongNumber = currentlyPlayingSongNumber;
 
     // Set a new current song
-    currentlyPlayingSongNumber = currentSongIndex + 1;
-    currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
+    setSong(parseInt(currentSongIndex + 1));
+    currentSoundFile.play();
+
+
 
     // Update the Player Bar information
     updatePlayerBarSong();
 
     $('.main-controls .play-pause').html(playerBarPauseButton);
 
-    var $previousSongNumberCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
-    var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
+    var $previousSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+    var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
 
     $previousSongNumberCell.html(pauseButtonTemplate);
     $lastSongNumberCell.html(lastSongNumber);
 };
+
+var togglePlayFromPlayerBar = function () { //forgot parenths at function, broke cells
+   if(currentSongFile == null){    
+     $(getSongNumberCell(currentlyPlayingSongNumber)).html(pauseButtonTemplate); 
+     $(this).html(playerBarPauseButton);
+     currentSoundFile.play();
+  }
+   if(currentSoundFile.isPaused()) { //got pretty close
+     $(getSongNumberCell(currentlyPlayingSongNumber)).html(pauseButtonTemplate); //had no idea how to use getSongNumberCell and pass in currentlyPlayingSongNumber
+     $(this).html(playerBarPauseButton); //didn't know to use $(this) because of above, but understand how it conforms to previous statement
+     currentSoundFile.play(); //had right idea, but left off parenths and had $ in front
+   }
+   else if(currentSongFromAlbum && !currentSoundFile.isPaused()) { //extra close pareths broke cells, mine was an if statement. had currentSong.play as argument,understand second argument EXCEPT exclamation point. Does that
+     $(getSongNumberCell(currentlyPlayingSongNumber)).html(playButtonTemplate);  // got right because opposite of statement above
+     $(this).html(playerBarPlayButton);  // got right because opposite of statement above
+     currentSoundFile.pause(); // got right because opposite of statement above
+   }
+ };
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>'; //This will cause a play button to appear each time song has cursor on it
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
@@ -155,6 +214,8 @@ var playerBarPlayButton = '<span class="ion-play"></span>';
 var playerBarPauseButton = '<span class="ion-pause"></span>'; 
 var currentlyPlayingSongNumber = null;
 var currentSongFromAlbum = null;
+var currentSoundFile = null;
+var currentVolume = 80;
 var currentAlbum = null;
 
 var $previousButton = $('.main-controls .previous');
@@ -164,4 +225,5 @@ var $nextButton = $('.main-controls .next');
    setCurrentAlbum(albumPicasso);
    $previousButton.click(previousSong);
    $nextButton.click(nextSong);
+   $playPauseButton.click(togglePlayFromPlayerBar);
  });
