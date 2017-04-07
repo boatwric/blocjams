@@ -191,11 +191,11 @@ var previousSong = function() {
 };
 
 var togglePlayFromPlayerBar = function () { //forgot parenths at function, broke cells
-   if(currentSongFile == null){    
-     $(getSongNumberCell(currentlyPlayingSongNumber)).html(pauseButtonTemplate); 
-     $(this).html(playerBarPauseButton);
-     currentSoundFile.play();
-  }
+   //if(currentSoundFile == null){    
+     //$(getSongNumberCell(currentlyPlayingSongNumber)).html(pauseButtonTemplate); 
+     //$(this).html(playerBarPauseButton);
+     //currentSoundFile.play();
+  //}
    if(currentSoundFile.isPaused()) { //got pretty close
      $(getSongNumberCell(currentlyPlayingSongNumber)).html(pauseButtonTemplate); //had no idea how to use getSongNumberCell and pass in currentlyPlayingSongNumber
      $(this).html(playerBarPauseButton); //didn't know to use $(this) because of above, but understand how it conforms to previous statement
@@ -218,6 +218,7 @@ var currentSoundFile = null;
 var currentVolume = 80;
 var currentAlbum = null;
 
+var $playerBarPlayButton = $('.main-controls .play-pause');
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
 
@@ -225,5 +226,5 @@ var $nextButton = $('.main-controls .next');
    setCurrentAlbum(albumPicasso);
    $previousButton.click(previousSong);
    $nextButton.click(nextSong);
-   $playPauseButton.click(togglePlayFromPlayerBar);
+   $playerBarPlayButton.click(togglePlayFromPlayerBar);
  });
