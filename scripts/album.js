@@ -23,6 +23,29 @@ var setVolume = function(volume) {
      }
  };
 
+var setCurrentTimeInPlayerBar = function(currentTime) { //function with currentTime as argument
+    var $currentTimeElement = $('.seek-control .current-time'); //jQuery object that looks for all current-time class elements of seek-contol class
+    $currentTimeElement.text(currentTime); //for $currentTimeElement, replace the text with currentTime
+};
+
+var setTotalTimeInPlayerBar = function(totalTime) { //function with currentTime as argument
+    var $totalTimeElement = $('.seek-control .total-time'); //jQuery object that looks for all total-time class elements of seek-control class
+    $totalTimeElement.text(totalTime); //for $totalTimeElement, replace text with totalTime
+}
+
+var filterTimeCode = function(timeInSeconds) { //function that takes timeInSeconds as argument
+    var seconds = Number.parseFloat(timeInSeconds); //takes Number string, turned into floating point number, passed into timeInSeconds
+    var wholeSeconds = Math.floor(seconds); //round floating point down to nearest integer (whole number)
+    var minutes = Math.floor(wholeSeconds / 60); //take seconds integer, divide by 60 to get minutes
+
+    var remainingSeconds = wholeSeconds % 60; //take seconds integer, modulus to get remainder from dividing by 60, gives seconds
+    var output = minutes + ':' + remainingSeconds;
+
+    return output;
+};
+
+
+
 var getSongNumberCell = function(number) {
      return $('.song-item-number[data-song-number="' + number + '"]')
 };
@@ -271,11 +294,13 @@ var previousSong = function() {
 var togglePlayFromPlayerBar = function () { //forgot parenths at function, broke cells
    if(currentSoundFile.isPaused()) { //got pretty close
      $(getSongNumberCell(currentlyPlayingSongNumber)).html(pauseButtonTemplate); //had no idea how to use getSongNumberCell and pass in currentlyPlayingSongNumber
+     
      $(this).html(playerBarPauseButton); //didn't know to use $(this) because of above, but understand how it conforms to previous statement
      currentSoundFile.play(); //had right idea, but left off parenths and had $ in front
    }
    else if(currentSongFromAlbum && !currentSoundFile.isPaused()) { //extra close pareths broke cells, mine was an if statement. had currentSong.play as argument,understand second argument EXCEPT exclamation point. Does that
      $(getSongNumberCell(currentlyPlayingSongNumber)).html(playButtonTemplate);  // got right because opposite of statement above
+     
      $(this).html(playerBarPlayButton);  // got right because opposite of statement above
      currentSoundFile.pause(); // got right because opposite of statement above
    }
